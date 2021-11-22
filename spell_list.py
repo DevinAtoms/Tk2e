@@ -8,9 +8,11 @@ token = json.loads(data_dumped)
 token_items = token['actors']['actor.1']['items']
 
 items = pd.DataFrame(token_items)
-items = pd.DataFrame.transpose(items)
-items = pd.DataFrame.set_index(items, 'compset')
+items = items.transpose(copy=True)
+items.set_index('compset', inplace=True)
+sl = pd.DataFrame(items.at['Spell', ])
+sl.dropna(axis='columns', inplace=True)
 
-spell_list = pd.DataFrame(items.at['Spell',])
+sl['Trait'].str.split(',', expand=True)
 
-spell_list.to_excel("output.xlsx")
+sl.to_excel("output.xlsx")
