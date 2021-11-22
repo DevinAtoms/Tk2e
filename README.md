@@ -6,7 +6,7 @@ Its my attempt at building an app of sorts for Pathfinder 2E.
 This was mostly born out of a weird lack of apps for P2E, but also serves as practice for working with Python data structures and JSON
 
 ## Goals
-### Sub items are in no particular order
+> Sub items are in no particular order
 
 - [x] Parse JSON export from Hero Lab Online
 - [ ] Export parsed data into a format that's usable
