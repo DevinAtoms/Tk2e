@@ -1,7 +1,8 @@
 # PY2E
-## What is this?
 
 Its my attempt at building an app of sorts for Pathfinder 2E.
+
+## What is this?
 
 This was mostly born out of a weird lack of apps for P2E, but also serves as practice for working with Python data structures and JSON
 
