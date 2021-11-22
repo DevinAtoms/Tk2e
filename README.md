@@ -10,25 +10,25 @@ This was mostly born out of a weird lack of apps for P2E, but also serves as pra
 > Sub items are in no particular order
 
 - [x] Parse JSON export from Hero Lab Online
-- [ ] Export parsed data into a format that's usable
-  - [ ] Character Info
-        - [ ] Ancestry
-        - [ ] Background
-        - [ ] Class
-              - [ ] Feats
-              - [ ] Other Abilities 
+- [ ] Format parsed data into a something that's usable
+     - [ ] Character Info
+       - [ ] Ancestry
+       - [ ] Background
+     - [ ] Class
+        - [ ] Feats
+        - [ ] Other Abilities 
         - [ ] Base Stats
-  - [ ] Ability Scores
+     - [ ] Ability Scores
         - [ ] Modifiers 
-  - [ ] Skills
+     - [ ] Skills
         - [ ] Proficiencies
         - [ ] Feats  
-  - [ ] Spells
+     - [ ] Spells
         - [ ] Spell Slots
         - [ ] Scrolls
         - [ ] Wands/Staffs
-  - [ ] General Feats
-  - [ ] Equipment
+     - [ ] General Feats / Misc Abilities
+     - [ ] Equipment
         - [ ] Proficiencies 
         - [ ] Equipment Specific Abilities 
 
