@@ -14,15 +14,19 @@ sl = pd.DataFrame(items.at['Spell',])
 sl.dropna(axis='columns', inplace=True)
 sl.drop(columns=['description'], inplace=True)
 
-traits = sl['Trait'].str.split(',', n=0, expand=True)
+traits = sl.set_index('name')
+traits = traits['Trait'].str.split(',', n=0, expand=True)
 
 for t in traits:
-    sl["Trait " + str(t)] = traits[t]
+    print(t[1])
+   # if traits[t].str[:2].contains('ss', regex=False):
+      #  print(traits[t])
+    #elif traits[t].any(traits[t].str[:3] == 'trd'):
+        #sl['Tradition'] = traits[t]
+   #else:
+        #sl["Trait" + str(t)] = traits[t]
 
-sl.drop(columns=['Trait'], inplace=True)
-sl.rename(columns={'compset': '', 'name': 'Spell Name', 'stAbScModifier': 'Ability Modifier', 'stNet': 'Spell Modifier',
-                   'stDC': 'Spell DC', 'proLevelBonNet': 'Proficiency Bonus', 'ProfLevel': 'Proficiency',
-          'spLevelBase': 'Spell Level', 'spLevelNet': 'Heightened Level', 'Trait 0': 'School'}, inplace=True)
-sl.set_index('Spell Name', inplace=True)
+# sl.drop(columns=['Trait'], inplace=True)
 
-sl.to_excel("output.xlsx")
+
+#sl.to_excel("output.xlsx")
