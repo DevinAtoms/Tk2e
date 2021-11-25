@@ -10,9 +10,23 @@ token_items = token['actors']['actor.1']['items']
 items = pd.DataFrame(token_items)
 items = items.transpose(copy=True)
 items.set_index('compset', inplace=True)
-sl = pd.DataFrame(items.at['Spell', ])
+sl = pd.DataFrame(items.at['Spell',])
 sl.dropna(axis='columns', inplace=True)
+sl.drop(columns=['description'], inplace=True)
 
-sl['Trait'].str.split(',', expand=True)
+traits = sl.set_index('name')
+traits = traits['Trait'].str.split(',', n=0, expand=True)
 
-sl.to_excel("output.xlsx")
+for t in traits:
+    print(t[1])
+   # if traits[t].str[:2].contains('ss', regex=False):
+      #  print(traits[t])
+    #elif traits[t].any(traits[t].str[:3] == 'trd'):
+        #sl['Tradition'] = traits[t]
+   #else:
+        #sl["Trait" + str(t)] = traits[t]
+
+# sl.drop(columns=['Trait'], inplace=True)
+
+
+#sl.to_excel("output.xlsx")
