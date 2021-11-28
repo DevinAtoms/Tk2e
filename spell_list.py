@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import re
 
 exp_file = open('token.json', encoding="utf8")
 data = json.load(exp_file)
@@ -20,9 +21,44 @@ for t in traits:
     sl["Trait " + str(t)] = traits[t]
 
 sl.drop(columns=['Trait'], inplace=True)
+
+pat1 = re.compile(r'(\b\w{5,},)', re.MULTILINE)
+pat2 = re.compile(r'[^a-z\d\s,]', re.MULTILINE)
+pat3 = re.compile(r'(?<!re)action', re.MULTILINE)
+pat4 = re.compile(r'(?<=\d)\s\s\w\w\s\s\s(?=\d)', re.MULTILINE)
+pat5 = re.compile(r'^\s+|\s(?!\w)', re.MULTILINE)
+pat6 = re.compile(r'\b\s(?!Minute)', re.MULTILINE)
+sl['spCastingText'] = sl['spCastingText'].str.replace(pat2, ' ')
+sl['spCastingText'] = sl['spCastingText'].str.replace('icon', '')
+sl['spCastingText'] = sl['spCastingText'].str.replace(pat3, '')
+sl['spCastingText'] = sl['spCastingText'].str.replace(pat4, '-')
+sl['spCastingText'] = sl['spCastingText'].str.title()
+sl['spCastingText'] = sl['spCastingText'].str.replace(pat5, '')
+sl['spCastingText'] = sl['spCastingText'].str.replace(pat6, '_')
+
+actions = sl['spCastingText'].str.split('_', n=0, expand=True)
+actions = actions.convert_dtypes(infer_objects=True, convert_string=False, convert_boolean=False,
+                                 convert_floating=False)
+actions[0].convert_dtypes()
+actions[0] = actions[0].convert_dtypes(infer_objects=True)
+
+for a in actions[0]:
+    if a.isdigit() == True:
+        a.convert_dtypes()
+    else:
+        continue
+
+
+
+for a in actions:
+    sl["Actions" + str(a)] = actions[a]
+
+sl.drop(columns=['spCastingText'], inplace=True)
+
 sl.rename(columns={'compset': '', 'name': 'Spell Name', 'stAbScModifier': 'Ability Modifier', 'stNet': 'Spell Modifier',
                    'stDC': 'Spell DC', 'proLevelBonNet': 'Proficiency Bonus', 'ProfLevel': 'Proficiency',
-          'spLevelBase': 'Spell Level', 'spLevelNet': 'Heightened Level', 'Trait 0': 'School'}, inplace=True)
+                   'spLevelBase': 'Spell Level', 'spLevelNet': 'Heightened Level', 'Trait 0': 'School'}, inplace=True)
+
 sl.set_index('Spell Name', inplace=True)
 
-sl.to_excel("output.xlsx")
+# sl.to_excel("output.xlsx")

@@ -1,36 +1,30 @@
-import spell_list
+import json
 import pandas as pd
-import re
+from time import sleep
 
-re_spells = re.compile('sp[A-Z][A-Za-z]+')
+
+def itemLookup(items):
+
+    for i in items.index:
+        match i.startswith:
+            case 'sp':
+                print(i.startswith)
+            case 'ab':
+                print(i)
+            case 'sv':
+                print(i)
+            case 'ac':
+                print(i)
+            case _:
+                print(i.startswith)
+                pass
+
+
+#def itemParse(name, item_type):
+    #print(str(name)+' '+str(item_type))
+    #pass
 
 exp_file = open('token.json', encoding="utf8")
-data = json.load(exp_file)
-data_dumped = json.dumps(data)
-token = json.loads(data_dumped)
-token_items = token['actors']['actor.1']['items']
-spell = {}
-
-for i in token_items:
-    if bool(re.match(re_spells, i)):
-        spName = token_items[i]['name']
-        spDesc = token_items[i]['description']
-
-        if 'vaRangeText' in token_items[i].keys():
-            spRange = token_items[i]['vaRangeText']
-        else:
-            spRange = 'Self'
-
-        # spRange = token_items[i]['vaRangeText']
-        # spTarget = token_items[i]['vaTarget']
-        # spDc = token_items[i]['stDC']
-
-        spell[spName] = [spDesc, spRange]
-
-# spell_list = open('spell_list.json', 'w')
-# spell_list.write(json.dumps(spell))
-
-sl = pd.DataFrame(spell)
-sl = pd.DataFrame.transpose(sl)
-print(spell)
-print(sl)
+token = json.load(exp_file)
+tokenItems = pd.Series(token['actors']['actor.1']['items'])
+itemLookup(tokenItems)
