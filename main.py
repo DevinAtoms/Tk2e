@@ -1,10 +1,15 @@
 import json
+from tkinter import Tk, filedialog, StringVar
+from pathlib import Path
 
+global items
 
-def initActor():
-    exp_file = open('token.json', encoding="utf8")
-    token = json.load(exp_file)
-    return token['actors']['actor.1']['items']
+def initActor(jsonfile):
+    token_file = filedialog.askopenfilename(initialdir=str(Path.home()))
+    token = json.load(token_file)
+    actor = token['actors']['actor.1']
+    items = actor['items']
+    return actor, items
 
 
 def delName(itemdict):
@@ -14,7 +19,7 @@ def delName(itemdict):
     return itemdict
 
 
-items = initActor()
+actor, items = initActor()
 
 rv = {k: v for (k, v) in items.items() if k[:2] == 'rv'}
 perception = {v['name']: v for (k, v) in items.items() if k[:2] == 'Pe'}
