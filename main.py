@@ -1,5 +1,5 @@
 import json
-
+import re
 
 def init_actor():
     jpath = open('token.json', encoding="utf8")
@@ -20,7 +20,6 @@ def del_name(itemdict):
 
 
 actor, items = init_actor()
-
 
 perception = del_name({v['name']: v for (k, v) in items.items() if k[:2] == 'Pe'})
 spells = del_name({v['name']: v for (k, v) in items.items() if k[:2] == 'sp'})
@@ -45,3 +44,28 @@ fists = del_name({v['name']: v for (k, v) in items.items() if k[:2] == 'nw'})
 focusPoints = del_name({v['name']: v for (k, v) in items.items() if k[:5] == 'rvFoc'})
 heroPoints = del_name({v['name']: v for (k, v) in items.items() if k[:5] == 'rvHer'})
 hitPoints = del_name({v['name']: v for (k, v) in items.items() if k[:5] == 'rvHit'})
+
+
+def spell_list():
+    print(spells)
+
+
+
+
+
+def ability_scores():
+    for k, v in abilityScores.items():
+        print(k[:3].upper() + ': ' + str(v['stNet']))
+
+
+
+for k, v in spells.items():
+    if re.findall(re.compile(r'\w+\d'), v['spCastingText']) or re.findall(re.compile(r'somatic|verbal|material'), v['spCastingText']):
+        print(k, re.findall(re.compile(r'reaction|\w+\d'), v['spCastingText']), re.findall(re.compile(
+                r'somatic|verbal|material'), v['spCastingText']))
+    else:
+        print(k, v['spCastingText'])
+
+for k, v in spells.items():
+    if k == 'Heal':
+        print(v['description'])
