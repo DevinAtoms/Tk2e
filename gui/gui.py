@@ -5,8 +5,8 @@ from tkinter import ttk
 from parser import main
 
 root = Tk()
-root.geometry('650x200')
-root.resizable(width=False, height=False)
+root.geometry('800x600')
+# root.resizable(width=False, height=False)
 root.rowconfigure(0, weight=1)
 root.columnconfigure(0, weight=1)
 spell_description = ''
@@ -55,22 +55,30 @@ listFrame.rowconfigure(2, weight=1)
 
 spell_list_label = ttk.Label(listFrame, text='Spell List')
 spell_gen_btn = ttk.Button(listFrame, text='Generate', command=runapp)
-spell_listbox = Listbox(listFrame, listvariable=spell_list_var)
+spell_listbox = Listbox(listFrame, listvariable=spell_list_var, exportselection=False)
 
-spell_listbox.bind("<<ListboxSelect>>", lambda e: desc_string.set(main.set_desc(spell_listbox.curselection())))
+spell_listbox.bind("<<ListboxSelect>>", lambda e: setstring())
+
+
+def setstring():
+    global desc_string, textbox
+    textbox['state'] = 'normal'
+    textbox.delete(1.0, 'end')
+    textbox.insert('end', main.set_desc(spell_listbox.curselection()))
+    textbox['state'] = 'disabled'
+
 
 spell_listbox.grid(column=1, row=2, sticky=NS)
 spell_list_label.grid(column=1, row=1, sticky=NS)
 spell_gen_btn.grid(column=1, row=3, sticky=NS, pady=5)
 
-textFrame = ttk.Labelframe(mainFrame, text='Description', borderwidth=2, relief='sunken')
+textFrame = ttk.Labelframe(mainFrame, text='Description', borderwidth=2)
 textFrame.grid(column=6, row=2, sticky=NSEW)
+textFrame.columnconfigure(0, weight=1)
+textFrame.rowconfigure(0, weight=1)
 
-scrollframe = ScrollableFrame(textFrame)
-
-desc_text = ttk.Label(scrollframe.scrollable_frame, textvariable=desc_string, wraplength=425)
-scrollframe.pack(fill='both', expand=True)
-desc_text.pack(expand=True, padx=4)
-
+textbox = tk.Text(textFrame, takefocus=False, wrap='word', exportselection=False)
+textbox.grid(column=0, row=0, sticky=NSEW, padx=5, pady=5)
+textbox.insert('end', spell_description)
 
 root.mainloop()
