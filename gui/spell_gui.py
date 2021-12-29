@@ -1,37 +1,18 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-
 from parser import main
 
-root = Tk()
-root.geometry('800x600')
-# root.resizable(width=False, height=False)
-root.rowconfigure(0, weight=1)
-root.columnconfigure(0, weight=1)
 spell_description = ''
+spell_list = []
+spell_name = ''
 
 
-class ScrollableFrame(ttk.Frame):
-    def __init__(self, container, *args, **kwargs):
-        super().__init__(container, *args, **kwargs)
-        canvas = tk.Canvas(self)
-        scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
-        self.scrollable_frame = ttk.Frame(canvas)
-
-        self.scrollable_frame.bind(
-                "<Configure>",
-                lambda e: canvas.configure(
-                        scrollregion=canvas.bbox("all")
-                        )
-                )
-
-        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-
-        canvas.configure(yscrollcommand=scrollbar.set)
-
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+class SpellWindow(tk.Toplevel):
+    def __init__(self, parent):
+        tk.Toplevel.__init__(self, parent)
+        self.parent = parent
+        self.geometry('800x600')
 
 
 def runapp():
@@ -44,7 +25,7 @@ def runapp():
 spell_list_var = StringVar()
 desc_string = StringVar()
 
-mainFrame = ttk.Frame(root, padding='5 5 5 5')
+mainFrame = ttk.Frame(spell_window, padding='5 5 5 5')
 mainFrame.grid(column=0, row=0, sticky=NSEW)
 mainFrame.rowconfigure(2, weight=3)
 mainFrame.columnconfigure(6, weight=3)
@@ -80,5 +61,3 @@ textFrame.rowconfigure(0, weight=1)
 textbox = tk.Text(textFrame, takefocus=False, wrap='word', exportselection=False)
 textbox.grid(column=0, row=0, sticky=NSEW, padx=5, pady=5)
 textbox.insert('end', spell_description)
-
-root.mainloop()
