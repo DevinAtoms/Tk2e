@@ -8,13 +8,6 @@ spell_list = []
 spell_name = ''
 
 
-class SpellWindow(tk.Toplevel):
-    def __init__(self, parent):
-        tk.Toplevel.__init__(self, parent)
-        self.parent = parent
-        self.geometry('800x600')
-
-
 def runapp():
     global spell_list, spell_name, spell_description
     spell_list, spell_name, spell_description = main.init_actor()
@@ -22,13 +15,15 @@ def runapp():
     desc_string.set(spell_description)
 
 
-spell_list_var = StringVar()
-desc_string = StringVar()
+root = Tk()
 
-mainFrame = ttk.Frame(spell_window, padding='5 5 5 5')
+mainFrame = ttk.Frame(root, padding='5 5 5 5')
 mainFrame.grid(column=0, row=0, sticky=NSEW)
 mainFrame.rowconfigure(2, weight=3)
 mainFrame.columnconfigure(6, weight=3)
+
+spell_list_var = StringVar()
+desc_string = StringVar()
 
 listFrame = ttk.Frame(mainFrame, padding='5 5 5 5')
 listFrame.grid(column=0, row=2, sticky=NS)
@@ -61,3 +56,5 @@ textFrame.rowconfigure(0, weight=1)
 textbox = tk.Text(textFrame, takefocus=False, wrap='word', exportselection=False)
 textbox.grid(column=0, row=0, sticky=NSEW, padx=5, pady=5)
 textbox.insert('end', spell_description)
+
+mainFrame.mainloop()

@@ -5,8 +5,8 @@ from tkinter import simpledialog
 
 
 class WindowRoot(tk.Tk):
-    def __init__(self):
-        tk.Tk.__init__(self)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.title('Py2E')
         self.geometry('800x600')
         self.config(menu=RootMenuBar(self))
@@ -19,10 +19,12 @@ class RootMainFrame(ttk.Frame):
         self.parent = parent
         self.notebook = RootFrameNotebook(self)
         self.nbpage1 = RootNotebookPage(self)
+        self.textlabel = ttk.Label(master=self.nbpage1, text='test')
+        self.textlabel.grid(row=1, column=1)
         self.nbpage2 = RootNotebookPage(self)
         self.notebook.add(self.nbpage1, text='Page 1')
         self.notebook.add(self.nbpage2, text='Page 2')
-        self.grid(column=0, row=0, sticky=tk.NSEW)
+        self.grid(row=0, column=0)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
 
@@ -82,7 +84,7 @@ class RootFrameNotebook(ttk.Notebook):
     def __init__(self, master):
         ttk.Notebook.__init__(self, master)
         self.master = master
-        self.grid(row=0, column=0, sticky=tk.NSEW)
+        self.grid(row=0, column=0)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
 
@@ -91,19 +93,13 @@ class RootNotebookPage(ttk.Frame):
     def __init__(self, parent, *args, **kwargs):
         ttk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
-        self.configure(borderwidth=2, border=1)
         self.grid(row=0, column=0)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
         self.page_type = None
 
-
-
         def page_setup(page_type):
             self.page_type = page_type
-
-
-
 
 if __name__ == "__main__":
     root = WindowRoot()
