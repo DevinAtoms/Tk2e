@@ -2,44 +2,39 @@ import json
 from tkinter import ttk, filedialog
 from tkinter import *
 
-sp_lst = []
-sp_name = ''
-sp_desc = ''
-sp_dict = {}
 
+# TODO simplify this to require less function calls
 
 def get_actor():
     return open(filedialog.askopenfilename())
 
 
 def init_actor():
-    global sp_lst, sp_name, sp_desc, sp_dict
     token = json.load(get_actor())
-    a = token['actors']['actor.1']
-    i = a['items']
-    s = act_spells(i)
-    sp_dict = s
-    sp_lst = [k for k, v in s.items()]
-    sp_name = sp_lst[0]
-    sp_desc = s[sp_name]['description']
-    return sp_lst, sp_name, sp_desc
+    actor = token['actors']['actor.1']
+    items = actor['items']
+    spells = act_spells(items)
+    spell_list = [k for k in spells.keys()]
+    spell_name = spell_list[0]
+    spell_desc = spells[spell_name]['description']
+    return spell_list, spell_name, spell_desc, spells
 
 
+# Doesn't look like this is used anywhere
+# TODO find a usage for this or delete it
 def get_list(sp):
-    spells_list = [k for k, v in sp.items()]
+    spells_list = [k for k in sp.keys()]
     spells_list.sort()
     return spells_list, sp
 
 
-def set_desc(selection):
-    global sp_lst, sp_name, sp_desc, sp_dict
-    print(selection)
+def set_desc(sp_list, sp_dict, selection):
     if selection == ():
         pass
     else:
-        spell_name = sp_lst[selection[0]]
-        spell_description = sp_dict[spell_name]['description']
-        return spell_description
+        spell_name = sp_list[selection[0]]
+        spell_desc = sp_dict[spell_name]['description']
+        return spell_desc
 
 
 def del_name(itemdict):
@@ -52,6 +47,8 @@ def del_name(itemdict):
     return itemdict
 
 
+# I may or may not still need these here
+# TODO find a usage or delete these
 def act_spells(it):
     sp = del_name({v['name']: v for (k, v) in it.items() if k[:2] == 'sp'})
     return sp
@@ -165,6 +162,8 @@ def act_hero_pts(it):
 def act_hit_pts(it):
     hp = del_name({v['name']: v for (k, v) in it.items() if k[:5] == 'rvHit'})
     return hp
+
+# I don't remember what this is for, but I'm going to leave it here just in case.
 
 # for k, v in spells.items():
 #    if re.findall(re.compile(r'\w+\d'), v['spCastingText']) or re.findall(re.compile(r'somatic|verbal|material'),

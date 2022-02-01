@@ -3,14 +3,20 @@ from tkinter import *
 from tkinter import ttk
 from parser import main
 
-spell_description = ''
 spell_list = []
 spell_name = ''
+spell_description = ''
+spell_dict = {}
 
+
+# TODO integrate this whole thing into a larger main GUI
 
 def runapp():
-    global spell_list, spell_name, spell_description
-    spell_list, spell_name, spell_description = main.init_actor()
+    global spell_list, spell_name, spell_description, spell_dict
+    # TODO find a better way to do this that doesn't rely on global variables
+
+    spell_list, spell_name, spell_description, spell_dict = main.init_actor()
+    spell_listbox['state'] = 'normal'
     spell_list_var.set(spell_list)
     desc_string.set(spell_description)
 
@@ -31,16 +37,16 @@ listFrame.rowconfigure(2, weight=1)
 
 spell_list_label = ttk.Label(listFrame, text='Spell List')
 spell_gen_btn = ttk.Button(listFrame, text='Generate', command=runapp)
-spell_listbox = Listbox(listFrame, listvariable=spell_list_var, exportselection=False)
+spell_listbox = Listbox(listFrame, listvariable=spell_list_var, exportselection=False, state='disabled')
 
-spell_listbox.bind("<<ListboxSelect>>", lambda e: setstring())
+spell_listbox.bind("<<ListboxSelect>>", lambda e: set_string())
 
 
-def setstring():
+def set_string():
     global desc_string, textbox
     textbox['state'] = 'normal'
     textbox.delete(1.0, 'end')
-    textbox.insert('end', main.set_desc(spell_listbox.curselection()))
+    textbox.insert('end', main.set_desc(spell_list, spell_dict, spell_listbox.curselection()))
     textbox['state'] = 'disabled'
 
 
@@ -53,7 +59,7 @@ textFrame.grid(column=6, row=2, sticky=NSEW)
 textFrame.columnconfigure(0, weight=1)
 textFrame.rowconfigure(0, weight=1)
 
-textbox = tk.Text(textFrame, takefocus=False, wrap='word', exportselection=False)
+textbox = tk.Text(textFrame, takefocus=False, wrap='word', exportselection=False, state='disabled')
 textbox.grid(column=0, row=0, sticky=NSEW, padx=5, pady=5)
 textbox.insert('end', spell_description)
 

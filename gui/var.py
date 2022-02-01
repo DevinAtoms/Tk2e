@@ -4,6 +4,8 @@ from abc import ABC
 from collections.abc import MutableMapping
 
 
+# TODO Revisit this
+
 class JSONexport:
     def __init__(self, parent, jsonfile):
 
@@ -24,13 +26,12 @@ class JSONexport:
             self.perception = {v['name']: v for (k, v) in self.items.items() if k[:2] == 'Pe'}
             self.focus_pts = {v['name']: v for (k, v) in self.items.items() if k[:5] == 'rvFoc'}
             self.hero_pts = {v['name']: v for (k, v) in self.items.items() if k[:5] == 'rvHer'}
-            #self.hit_pts = ItemDict({v['name']: v for (k, v) in self.items.items() if k[:5] == 'rvHit'})
+            # self.hit_pts = ItemDict({v['name']: v for (k, v) in self.items.items() if k[:5] == 'rvHit'})
             self.hit_pts = ItemDict({'Hit Points': {v['name']: v for (k, v) in self.items.items() if k[:5] == 'rvHit'}})
             self.hit_pts.data['Hit Points'] = self.hit_pts.data['Hit Points']['rvMax']
             self.saves = {v['name']: v for (k, v) in self.items.items() if k[:2] == 'sv'}
             self.armor_class = {v['compset']: v for (k, v) in self.items.items() if k[:2] == 'ac'}
             self.move_speed = {v['name']: v for (k, v) in self.items.items() if k[:2] == 'mv'}
-
 
         else:
             self.jsonvalue = None
@@ -95,6 +96,7 @@ class JSONexport:
         heritage = {v['name']: v for (k, v) in self.items() if k[:2] == 'hr'}
 
 
+# TODO Unnecessarily complicated, rework this
 class ItemDict(MutableMapping, ABC):
     def __init__(self, items: dict):
         self.data = self.del_name(items)
@@ -139,8 +141,3 @@ class ItemDict(MutableMapping, ABC):
     def value_list(self):
         keylist = [key for key, value in self.data]
         return keylist
-
-
-root = tk.Tk()
-Actor = JSONexport(root, '/home/dadams/PycharmProjects/py2e/Export.json')
-print(Actor.hit_pts())

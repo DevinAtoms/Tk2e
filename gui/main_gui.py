@@ -101,6 +101,7 @@ class RootNotebookPage(ttk.Frame):
         def page_setup(page_type):
             self.page_type = page_type
 
+
 if __name__ == "__main__":
     root = WindowRoot()
     root.mainloop()
